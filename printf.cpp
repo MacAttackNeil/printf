@@ -1,3 +1,5 @@
+#include <printf.hpp>
+
 //3 SPACES ADAM NOT TABS
 int printf(const char *fmt, ...)
 {
