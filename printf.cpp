@@ -1,4 +1,4 @@
-#include <printf.hpp>
+#include "printf.hpp"
 
 //3 SPACES ADAM NOT TABS
 int printf(const char *fmt, ...)
@@ -12,15 +12,15 @@ int printf(const char *fmt, ...)
 	
    while( c = *fmt++ )
    {
-	  if(c == '%')
-	  {
-		 c = *fmt++;
+      if(c == '%')
+      {
+         c = *fmt++;
          switch(c)
-         {
+        {
             //decimals
             case 'd':
                break;
-            //floats
+           //floats
             case 'f':
                break;
             //hex
@@ -28,16 +28,16 @@ int printf(const char *fmt, ...)
   		       break;
             default:
 			   break;
-         }
+        }
 	  }
    }
 
    va_end(args);	
-
+   write(1, "yo", 2);
    return bytes_written;
 }
 
-int snprintf(ichar *dest, size_t size, const char *fmt, ...)
+int snprintf(char *dest, size_t size, const char *fmt, ...)
 {
    int bytes_written = 0;
 
