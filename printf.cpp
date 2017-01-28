@@ -30,7 +30,7 @@ int printf(const char *fmt, ...)
 			   Keep going until its 12345 %10 which is 5 so you youll have the char * of 12345 */
 			   int64_t i, sign;
 			   char toPrint[64];
-			   if(decimal_parameter > 0)
+			   if(decimal_parameter < 0)
 			   {
 				  sign = 1;
 			      decimal_parameter = -decimal_parameter;
@@ -81,14 +81,14 @@ int printf(const char *fmt, ...)
   		       break;
 			}
             default:
-			 //  write(1,c,1);
 			   break;
         }
 	  }
 	  else
 	  {
 		//here we write out anything not specified as a type of variable
-		//write(1, c, 1);
+		char printIt[1] = {c};
+		write(1, printIt, 1);
 	  }
    }
 
