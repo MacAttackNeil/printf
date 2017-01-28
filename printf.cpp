@@ -23,10 +23,40 @@ int printf(const char *fmt, ...)
             case 'd':
 			{
 			   int64_t decimal_parameter = va_arg(args, int64_t);
+			
 			   /*so to use write, must convert int64_t to a char * this can be confusing so im just writing comments as I understand it before implementing it
 			   If you have a number 12345 and divide by 10000 i get 1.2345. Then %10 that number and you get 1. 
-			   Then you divide  12345 by 1000 and get 12.345, then %10 and you get 2. Add that to the char *, should have 12. Keep going until its 12345 %10 which is 5 so you youll have the char * of 12345 */
-			   write(1, "this be d", 10);
+			   Then you divide  12345 by 1000 and get 12.345, then %10 and you get 2. Add that to the char *, should have 12. 
+			   Keep going until its 12345 %10 which is 5 so you youll have the char * of 12345 */
+			   int64_t i, sign;
+			   char toPrint[64];
+			   if(decimal_parameter > 0)
+			   {
+				  sign = 1;
+			      decimal_parameter = -decimal_parameter;
+			   }
+			   i = 0;
+			   do {
+				   toPrint[i++] = decimal_parameter % 10 + '0';
+			   } while ((decimal_parameter /= 10) > 0);
+			   if (sign == 1)
+			   {
+			      toPrint[i++] = '-';
+			   }
+			   toPrint[i] = '\0';
+
+			   /* REVERSE */
+			
+			   int64_t counter, temp1, temp2;
+
+			   for(counter = 0, temp2 = i-1; counter < temp2; counter++, temp2--)
+			   {
+			      temp1 = toPrint[counter];
+				  toPrint[counter] = toPrint[temp2];
+				  toPrint[temp2] = temp1;
+			   }
+
+			   write(1, toPrint, i);
                break;
 			}
            //floats, use double
