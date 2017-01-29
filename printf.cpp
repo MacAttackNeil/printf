@@ -29,6 +29,7 @@ int printf(const char *fmt, ...)
 			   Then you divide  12345 by 1000 and get 12.345, then %10 and you get 2. Add that to the char *, should have 12. 
 			   Keep going until its 12345 %10 which is 5 so you youll have the char * of 12345 */
 			   int64_t i, sign;
+			   //if sign = 1 then number is negative
 			   char toPrint[64];
 			   if(decimal_parameter < 0)
 			   {
@@ -36,7 +37,8 @@ int printf(const char *fmt, ...)
 			      decimal_parameter = -decimal_parameter;
 			   }
 			   i = 0;
-			   do {
+			   do 
+			   {
 				   toPrint[i++] = decimal_parameter % 10 + '0';
 			   } while ((decimal_parameter /= 10) > 0);
 			   if (sign == 1)
@@ -57,6 +59,7 @@ int printf(const char *fmt, ...)
 			   }
 
 			   write(1, toPrint, i);
+			   bytes_written += i;
                break;
 			}
            //floats, use double
@@ -89,6 +92,7 @@ int printf(const char *fmt, ...)
 		//here we write out anything not specified as a type of variable
 		char printIt[1] = {c};
 		write(1, printIt, 1);
+		bytes_written += 1;
 	  }
    }
 
