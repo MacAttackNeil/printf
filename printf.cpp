@@ -1,6 +1,8 @@
 #include "printf.hpp"
 
 //3 SPACES ADAM NOT TABS
+
+
 int printf(const char *fmt, ...)
 {
    int bytes_written = 0;
@@ -23,17 +25,130 @@ int printf(const char *fmt, ...)
             case 'd':
 			{
 			   int64_t decimal_parameter = va_arg(args, int64_t);
+			
 			   /*so to use write, must convert int64_t to a char * this can be confusing so im just writing comments as I understand it before implementing it
 			   If you have a number 12345 and divide by 10000 i get 1.2345. Then %10 that number and you get 1. 
+
 			   Then you divide  12345 by 1000 and get 12.345, then %10 and you get 2. Add that to the char *, should have 12. Keep going until its 12345 %10 which is 5 so you youll have the char * of 12345 */
 			   //write(1, "this be d", 10);
+
+			   Then you divide  12345 by 1000 and get 12.345, then %10 and you get 2. Add that to the char *, should have 12. 
+			   Keep going until its 12345 %10 which is 5 so you youll have the char * of 12345 */
+			   int64_t i, sign;
+			   sign = 0;
+			   //if sign = 1 then number is negative
+			   char toPrint[100];
+			   
+			   if(decimal_parameter < 0)
+			   {
+			      sign = 1;
+			      decimal_parameter = -decimal_parameter;
+			   }
+				  i = 0;
+			   do 
+			   {
+				  toPrint[i++] = decimal_parameter % 10 + '0';
+				} while ((decimal_parameter /= 10) > 0);
+				if (sign == 1)
+				{
+					toPrint[i++] = '-';
+				 }
+				 toPrint[i] = '\0';
+
+			 /* REVERSE */
+			
+			    int64_t counter, temp1, temp2;
+
+			    for(counter = 0, temp2 = i-1; counter < temp2; counter++, temp2--)
+				{
+					 temp1 = toPrint[counter];
+				     toPrint[counter] = toPrint[temp2];
+				     toPrint[temp2] = temp1;
+               }
+			   write(1, toPrint, i);
+			   bytes_written += i;
+
                break;
 			}
            //floats, use double
             case 'f':
 			{
+			   /*Take first part of decimal and turn to int. Then substract that fromthe doub
+				*Then multiply by 10 to and repeat
+				Example: 5.67 -> 5 -> 5.67 - 5 -> .67*10 -> 6.7 -> repeat*/
 			   double double_parameter = va_arg(args, double);
+
 			   //write(1, "this be f", 10);
+
+			   char toPrint[100];
+			   char tempPrint[100];
+			   int64_t i = 0;
+			   int sign = 0;
+			   //hold value before the . decimal place and convert to char *
+			   int64_t beforeDecimal = (int64_t)double_parameter;
+			   int64_t front = beforeDecimal;
+			   double afterDecimal = double_parameter - beforeDecimal;
+			   afterDecimal = afterDecimal*10;
+			   while(afterDecimal >  .5 )
+			   {
+			      beforeDecimal = (int64_t)afterDecimal;
+				  int64_t temp = beforeDecimal; 
+				  do
+				  {
+					tempPrint[i++] = beforeDecimal % 10 + '0';
+				  } while((beforeDecimal /= 10) > 0);
+
+				  afterDecimal = (afterDecimal - temp);
+				  afterDecimal = afterDecimal*10;
+			   }
+			   int64_t tempI = i;
+			   i = 0;
+			   //conver to char *
+			   if(front < 0)
+			   {
+			      sign = 1;
+			      front = -front;
+			   }
+				toPrint[i++] = '.';
+			   do 
+			   {
+				  toPrint[i++] = front % 10 + '0';
+				} while ((front /= 10) > 0);
+				if (sign == 1)
+				{
+					toPrint[i++] = '-';
+				 }
+				 toPrint[i] = '\0';
+				
+			 /* REVERSE */
+			
+			    int64_t counter, temp1, temp2;
+
+			    for(counter = 0, temp2 = i-1; counter < temp2; counter++, temp2--)
+				{
+					 temp1 = toPrint[counter];
+				     toPrint[counter] = toPrint[temp2];
+				     toPrint[temp2] = temp1;
+                }
+
+				for(int x = 0; x < tempI; x++)
+				{
+				   if(x == 6)
+				   {
+				      break;
+				   }
+				   
+				   toPrint[i++] = tempPrint[x];
+				}
+				while(tempI < 6)
+				{
+				   toPrint[i++] = '0';
+				   tempI++;
+				}
+			   
+
+			   write(1, toPrint, i);
+
                break;
 			}
             //hex, use uint64_t
@@ -69,14 +184,15 @@ int printf(const char *fmt, ...)
   		       break;
 			}
             default:
-			 //  write(1,c,1);
 			   break;
         }
 	  }
 	  else
 	  {
 		//here we write out anything not specified as a type of variable
-		//write(1, c, 1);
+		char printIt[1] = {c};
+		write(1, printIt, 1);
+		bytes_written += 1;
 	  }
    }
 
@@ -92,3 +208,6 @@ int snprintf(char *dest, size_t size, const char *fmt, ...)
 
    return bytes_written;
 }
+
+
+
