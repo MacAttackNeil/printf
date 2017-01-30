@@ -26,21 +26,39 @@ int printf(const char *fmt, ...)
 			   /*so to use write, must convert int64_t to a char * this can be confusing so im just writing comments as I understand it before implementing it
 			   If you have a number 12345 and divide by 10000 i get 1.2345. Then %10 that number and you get 1. 
 			   Then you divide  12345 by 1000 and get 12.345, then %10 and you get 2. Add that to the char *, should have 12. Keep going until its 12345 %10 which is 5 so you youll have the char * of 12345 */
-			   write(1, "this be d", 10);
+			   //write(1, "this be d", 10);
                break;
 			}
            //floats, use double
             case 'f':
 			{
 			   double double_parameter = va_arg(args, double);
-			   write(1, "this be f", 10);
+			   //write(1, "this be f", 10);
                break;
 			}
             //hex, use uint64_t
             case 'x':
 			{
+			   char str[64];
+			   int i, count;
 			   uint64_t hex_parameter = va_arg(args, uint64_t);
-			   write(1, "this be x", 10);
+			   char map[16] = {'0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F'};
+			   
+			   for(i = 0; hex_parameter != 0; i++){
+				  
+				  str[i] = map[hex_parameter % 16];
+					
+				  hex_parameter = (uint64_t)(hex_parameter / 16);
+
+			   }
+			   char str_new[i];
+	
+			   for(count = 0; count < i; count++){
+			      str_new[count] = str[i - count - 1];
+			   }
+			   str_new[count] = '\0';
+			   
+			   write(1, str_new, count);
 			   break;
 			}
 			//EXTRA CREDIT. string, use char *
