@@ -80,11 +80,15 @@ int printf(const char *fmt, ...)
 			   double double_parameter = va_arg(args, double);
 
 			   //write(1, "this be f", 10);
-
+			   int sign = 0;
 			   char toPrint[100];
 			   char tempPrint[100];
 			   int64_t i = 0;
-			   int sign = 0;
+			   if( double_parameter < 0)
+			   {
+			      sign = 1;
+				  double_parameter = -double_parameter;
+			   }
 			   //hold value before the . decimal place and convert to char *
 			   int64_t beforeDecimal = (int64_t)double_parameter;
 			   int64_t front = beforeDecimal;
@@ -239,7 +243,6 @@ int snprintf(char *dest, size_t size, const char *fmt, ...)
 			   if(sign == 1){
 				   toPrint[i++] = '-';
 			   }
-			   //toPrint[i] = '\0';
 
 			   int64_t counter, tmp1, tmp2;
 
@@ -248,19 +251,10 @@ int snprintf(char *dest, size_t size, const char *fmt, ...)
 				  toPrint[counter] = toPrint[tmp2];
 				  toPrint[tmp2] = tmp1;
 			   }
-			   /*if(i <= size){
-			      //write(dest, toPrint, i);*/
-				  for(int j = 0; j < i; j++)//{
-				     send[bytes_written++] = toPrint[j];
-				  /*}
-				  //bytes_written += i;
-			   }
-			   else{
-			      //write(dest, toPrint, size);
-				  for(int j = 0; j < size; j++){
-				     send[bytes_written++] = toPrint[j];
+				  for(int j = 0; j < i; j++)
+				  {
+				    send[bytes_written++] = toPrint[j];
 				  }
-			   }*/
 			   break;
 			}
 			case 'f':
@@ -298,7 +292,6 @@ int snprintf(char *dest, size_t size, const char *fmt, ...)
 			   if(sign == 1){
 				  toPrint[i++];
 			   }
-			   //toPrint[i] = '\0';
 
 			   int64_t counter, tmp1, tmp2;
 
@@ -319,17 +312,9 @@ int snprintf(char *dest, size_t size, const char *fmt, ...)
 				  tempI++;
 			   }
 
-			   /*if(i <= size){
-			      //write(dest, toPrint, i);*/
 				  for(int j = 0; j < i; j++)
 				     send[bytes_written++] = toPrint[j];
-			   /*}
-			   else{
-				 // write(dest, toPrint, size);
-				  for(int j = 0; j < size; j++)
-				     send[bytes_written++] = toPrint[j];
-			   }*/
-			   break;
+			  			   break;
 			}
 			case 'x':
 			{
@@ -348,18 +333,9 @@ int snprintf(char *dest, size_t size, const char *fmt, ...)
 			   for(count = 0; count < i; count++){
 				  str_new[count] = str[i - count - 1];
 			   }
-			   //str_new[count] = '\0';
 
-			   /*if(count <= size){
-			      //write(dest, str_new, count);*/
 			      for(int j = 0; j < count; j++)
 				     send[bytes_written++] = str_new[j];
-			   /*}
-			   else{
-				  //write(dest, str_new, size);
-				  for(int j = 0; j < size; j++)
-				     send[bytes_written++] = str_new[j];
-			   }*/
 			   break;
 			}
 			case 's':
@@ -369,7 +345,6 @@ int snprintf(char *dest, size_t size, const char *fmt, ...)
 			   uint64_t length = 0;
 			   for(length = 0; string_parameter[length]; length++);
 			   
-			   //write(1, string_parameter, length);
 			   for(int j = 0; j < length; j++)
 				   send[bytes_written++] = string_parameter[j];
   		       break;
@@ -384,17 +359,13 @@ int snprintf(char *dest, size_t size, const char *fmt, ...)
    
    send[bytes_written] = '\0';
 
-   //write(1, send, bytes_written);
    int ll = 0;
    while(ll < size && send[ll] != '\0'){
 	    
-      //char * holder = new char[bytes_written];
-	  //holder[0] = send[0];
-	  //write(1, holder, 1);
 	  dest[ll] = send[ll];
 	  ll++;
+	  dest[ll] = '\0';
    }
-   //for(int j = 0; j < bytes_written; j++)
 
    return ll;
 }
