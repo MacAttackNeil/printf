@@ -32,7 +32,8 @@ int printf(const char *fmt, ...)
 			   Then you divide  12345 by 1000 and get 12.345, then %10 and you get 2. Add that to the char *, should have 12. Keep going until its 12345 %10 which is 5 so you youll have the char * of 12345 */
 			   //write(1, "this be d", 10);
 
-/*			   Then you divide  12345 by 1000 and get 12.345, then %10 and you get 2. Add that to the char *, should have 12. 
+			  /* Then you divide  12345 by 1000 and get 12.345, then %10 and you get 2. Add that to the char *, should have 12. 
+			   Then you divide  12345 by 1000 and get 12.345, then %10 and you get 2. Add that to the char *, should have 12. 
 			   Keep going until its 12345 %10 which is 5 so you youll have the char * of 12345 */
 			   int64_t i, sign;
 			   sign = 0;
@@ -183,6 +184,10 @@ int printf(const char *fmt, ...)
 			{
 			   char * string_parameter = va_arg(args, char *);
 			   //get length of the char * then print that out using write(1, char *, length)
+			   uint64_t length = 0;
+			   for(length = 0; string_parameter[length]; length++);
+			   
+			   write(1, string_parameter, length);
   		       break;
 			}
             default:
