@@ -364,7 +364,15 @@ int snprintf(char *dest, size_t size, const char *fmt, ...)
 			}
 			case 's':
 			{
-				break;
+			   char * string_parameter = va_arg(args, char *);
+			   //get length of the char * then print that out using write(1, char *, length)
+			   uint64_t length = 0;
+			   for(length = 0; string_parameter[length]; length++);
+			   
+			   //write(1, string_parameter, length);
+			   for(int j = 0; j < length; j++)
+				   send[bytes_written++] = string_parameter[j];
+  		       break;
 			}
 			default:
 				break;
@@ -378,7 +386,8 @@ int snprintf(char *dest, size_t size, const char *fmt, ...)
 
    //write(1, send, bytes_written);
    int ll = 0;
-   while(send[ll] != '\0'){
+   while(ll < size && send[ll] != '\0'){
+	    
       //char * holder = new char[bytes_written];
 	  //holder[0] = send[0];
 	  //write(1, holder, 1);
@@ -387,7 +396,7 @@ int snprintf(char *dest, size_t size, const char *fmt, ...)
    }
    //for(int j = 0; j < bytes_written; j++)
 
-   return bytes_written;
+   return ll;
 }
 
 
