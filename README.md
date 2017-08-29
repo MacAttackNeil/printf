@@ -1,3 +1,3 @@
 # printf
-test buddy
-Matthew MacNeil and Adam Ordway Printf project - project1 for cs361
+Project 1 for CS361 Operating Systems at the University of Tennessee
+Matthew MacNeil and Adam Ordway
